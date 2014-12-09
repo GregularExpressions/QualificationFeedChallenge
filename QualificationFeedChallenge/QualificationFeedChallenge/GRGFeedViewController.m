@@ -7,17 +7,23 @@
 //
 
 #import "GRGFeedViewController.h"
+#import "GRGAPIController.h"
 
 @interface GRGFeedViewController () <UITableViewDataSource, UITableViewDelegate, UIScrollViewDelegate>
 @property (nonatomic,strong) UITableView* feedTableView;
 @property (nonatomic,strong) UIActivityIndicatorView* activityView;
-@property (nonatomic,strong) NSArray* tableFeedItems;
+@property (nonatomic,strong) NSArray* tableQualifications;
 @end
 
 @implementation GRGFeedViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    GRGAPIController* apiController = [[GRGAPIController alloc] init];
+    __weak GRGFeedViewController* weakSelf = self;
+    [apiController downloadAndStoreEntitiesWithCompletion:^(NSError *error, NSArray *qualificationsArray) {
+        weakSelf.tableQualifications = qualificationsArray;
+    }];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -33,7 +39,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return self.tableFeedItems.count;
+    return self.tableQualifications.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath

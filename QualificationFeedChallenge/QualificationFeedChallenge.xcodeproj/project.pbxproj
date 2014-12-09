@@ -14,8 +14,10 @@
 		3781860B1A37827500600849 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 378186091A37827500600849 /* LaunchScreen.xib */; };
 		378186171A37827500600849 /* QualificationFeedChallengeTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 378186161A37827500600849 /* QualificationFeedChallengeTests.m */; };
 		378186241A3784A000600849 /* GRGCoreDataController.m in Sources */ = {isa = PBXBuildFile; fileRef = 378186211A3784A000600849 /* GRGCoreDataController.m */; };
-		378186251A3784A000600849 /* GRGFeedAPIController.m in Sources */ = {isa = PBXBuildFile; fileRef = 378186231A3784A000600849 /* GRGFeedAPIController.m */; };
+		378186251A3784A000600849 /* GRGAPIController.m in Sources */ = {isa = PBXBuildFile; fileRef = 378186231A3784A000600849 /* GRGAPIController.m */; };
 		3781862B1A3784F500600849 /* Model.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 378186291A3784F500600849 /* Model.xcdatamodeld */; };
+		3781862E1A37863500600849 /* Subject.m in Sources */ = {isa = PBXBuildFile; fileRef = 3781862D1A37863500600849 /* Subject.m */; };
+		378186311A37863600600849 /* Qualification.m in Sources */ = {isa = PBXBuildFile; fileRef = 378186301A37863600600849 /* Qualification.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -43,9 +45,13 @@
 		378186161A37827500600849 /* QualificationFeedChallengeTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = QualificationFeedChallengeTests.m; sourceTree = "<group>"; };
 		378186201A3784A000600849 /* GRGCoreDataController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GRGCoreDataController.h; sourceTree = "<group>"; };
 		378186211A3784A000600849 /* GRGCoreDataController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GRGCoreDataController.m; sourceTree = "<group>"; };
-		378186221A3784A000600849 /* GRGFeedAPIController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GRGFeedAPIController.h; sourceTree = "<group>"; };
-		378186231A3784A000600849 /* GRGFeedAPIController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GRGFeedAPIController.m; sourceTree = "<group>"; };
+		378186221A3784A000600849 /* GRGAPIController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GRGAPIController.h; sourceTree = "<group>"; };
+		378186231A3784A000600849 /* GRGAPIController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GRGAPIController.m; sourceTree = "<group>"; };
 		3781862A1A3784F500600849 /* Model.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model.xcdatamodel; sourceTree = "<group>"; };
+		3781862C1A37863500600849 /* Subject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Subject.h; sourceTree = "<group>"; };
+		3781862D1A37863500600849 /* Subject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Subject.m; sourceTree = "<group>"; };
+		3781862F1A37863600600849 /* Qualification.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Qualification.h; sourceTree = "<group>"; };
+		378186301A37863600600849 /* Qualification.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Qualification.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -128,8 +134,8 @@
 			children = (
 				378186201A3784A000600849 /* GRGCoreDataController.h */,
 				378186211A3784A000600849 /* GRGCoreDataController.m */,
-				378186221A3784A000600849 /* GRGFeedAPIController.h */,
-				378186231A3784A000600849 /* GRGFeedAPIController.m */,
+				378186221A3784A000600849 /* GRGAPIController.h */,
+				378186231A3784A000600849 /* GRGAPIController.m */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -149,6 +155,10 @@
 			isa = PBXGroup;
 			children = (
 				378186291A3784F500600849 /* Model.xcdatamodeld */,
+				3781862F1A37863600600849 /* Qualification.h */,
+				378186301A37863600600849 /* Qualification.m */,
+				3781862C1A37863500600849 /* Subject.h */,
+				3781862D1A37863500600849 /* Subject.m */,
 			);
 			name = "Core Data";
 			sourceTree = "<group>";
@@ -255,8 +265,10 @@
 				378186031A37827500600849 /* GRGFeedViewController.m in Sources */,
 				378186241A3784A000600849 /* GRGCoreDataController.m in Sources */,
 				378186001A37827500600849 /* AppDelegate.m in Sources */,
+				378186311A37863600600849 /* Qualification.m in Sources */,
 				378185FD1A37827500600849 /* main.m in Sources */,
-				378186251A3784A000600849 /* GRGFeedAPIController.m in Sources */,
+				3781862E1A37863500600849 /* Subject.m in Sources */,
+				378186251A3784A000600849 /* GRGAPIController.m in Sources */,
 				3781862B1A3784F500600849 /* Model.xcdatamodeld in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

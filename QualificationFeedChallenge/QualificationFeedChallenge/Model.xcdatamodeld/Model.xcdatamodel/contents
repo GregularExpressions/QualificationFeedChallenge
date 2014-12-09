@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="6254" systemVersion="14C78c" minimumToolsVersion="Xcode 4.3" macOSVersion="Automatic" iOSVersion="Automatic">
+    <entity name="Qualification" representedClassName="Qualification" syncable="YES">
+        <attribute name="createdDate" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="link" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="qualificationID" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="updatedDate" optional="YES" attributeType="Date" syncable="YES"/>
+        <relationship name="subjectsForQualification" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Subject" inverseName="qualificationForSubject" inverseEntity="Subject" syncable="YES"/>
+    </entity>
+    <entity name="Subject" representedClassName="Subject" syncable="YES">
+        <attribute name="colour" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="link" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="subjectID" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="qualificationForSubject" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Qualification" inverseName="subjectsForQualification" inverseEntity="Qualification" syncable="YES"/>
+    </entity>
+    <elements>
+        <element name="Qualification" positionX="-63" positionY="-18" width="128" height="133"/>
+        <element name="Subject" positionX="-54" positionY="27" width="128" height="118"/>
+    </elements>
+</model>

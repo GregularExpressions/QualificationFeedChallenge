@@ -1,8 +1,8 @@
 //
 //  GRGCoreDataController.m
-//  PhotoFeedChallenge
+//  QualificationFeedChallenge
 //
-//  Created by Greg on 08/11/2014.
+//  Created by Greg on 09/12/2014.
 //  Copyright (c) 2014 Greg Gunner. All rights reserved.
 //
 
@@ -24,21 +24,21 @@
     return sharedController;
 }
 
-#pragma mark - FeedItem
-- (FeedItem*) getNewFeedItemOnManagedObjectContext:(NSManagedObjectContext*)context
+#pragma mark - Qualification
+- (Qualification*) getNewQualificationItemOnManagedObjectContext:(NSManagedObjectContext*)context
 {
-    FeedItem* newFeedItem = [NSEntityDescription insertNewObjectForEntityForName:@"FeedItem" inManagedObjectContext:context];
-    return newFeedItem;
+    Qualification* newQualification = [NSEntityDescription insertNewObjectForEntityForName:@"Qualification" inManagedObjectContext:context];
+    return newQualification;
 }
 
-- (NSArray*) getAllFeedItemsOnManagedObjectContext:(NSManagedObjectContext*)context
+- (NSArray*) getAllQualificationsOnManagedObjectContext:(NSManagedObjectContext*)context
 {
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
     
-    NSEntityDescription *entity = [NSEntityDescription entityForName:@"FeedItem"
+    NSEntityDescription *entity = [NSEntityDescription entityForName:@"Qualification"
                                               inManagedObjectContext:context];
     [fetchRequest setEntity:entity];
-    [fetchRequest setSortDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"feedID" ascending:YES]]];
+    [fetchRequest setSortDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"updatedDate" ascending:NO]]];
     
     NSError* fetchError;
     NSArray *array = [context executeFetchRequest:fetchRequest error:&fetchError];
@@ -49,29 +49,11 @@
     return array;
 }
 
-#pragma mark - FeedImageItem
-- (FeedImageItem*) getNewFeedImageItemOnManagedObjectContext:(NSManagedObjectContext*)context
+#pragma mark - Subject
+- (Subject*) getNewSubjectOnManagedObjectContext:(NSManagedObjectContext*)context
 {
-    FeedImageItem* newFeedImageItem = [NSEntityDescription insertNewObjectForEntityForName:@"FeedImageItem" inManagedObjectContext:context];
-    return newFeedImageItem;
-}
-
-- (NSArray*) getAllFeedImageItemsOnManagedObjectContext:(NSManagedObjectContext*)context
-{
-    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-    
-    NSEntityDescription *entity = [NSEntityDescription entityForName:@"FeedImageItem"
-                                              inManagedObjectContext:context];
-    [fetchRequest setEntity:entity];
-    [fetchRequest setSortDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"imageID" ascending:YES]]];
-    
-    NSError* fetchError;
-    NSArray *array = [context executeFetchRequest:fetchRequest error:&fetchError];
-    if (fetchError) {
-        NSLog(@"%s : %@",__PRETTY_FUNCTION__,fetchError);
-    }
-    
-    return array;
+    Subject* newSubject = [NSEntityDescription insertNewObjectForEntityForName:@"Subject" inManagedObjectContext:context];
+    return newSubject;
 }
 
 #pragma mark - Core Data
@@ -115,7 +97,7 @@
     if (_managedObjectModel != nil) {
         return _managedObjectModel;
     }
-    NSURL *modelURL = [[NSBundle mainBundle] URLForResource:@"PhotoFeedChallenge" withExtension:@"momd"];
+    NSURL *modelURL = [[NSBundle mainBundle] URLForResource:@"Model" withExtension:@"momd"];
     _managedObjectModel = [[NSManagedObjectModel alloc] initWithContentsOfURL:modelURL];
     return _managedObjectModel;
 }
@@ -127,12 +109,12 @@
     }
     
     NSURL *storeUrl = [NSURL fileURLWithPath: [[GRGCoreDataController applicationDocumentsDirectory]
-                                               stringByAppendingPathComponent: @"PhotoFeedChallenge.sqlite"]];
+                                               stringByAppendingPathComponent: @"QualificationFeedChallenge.sqlite"]];
     NSError *error = nil;
     NSDictionary *options = @{
                               NSMigratePersistentStoresAutomaticallyOption : @YES,
                               NSInferMappingModelAutomaticallyOption : @YES,
-                              NSFileProtectionKey: NSFileProtectionComplete //UnlessOpen
+                              NSFileProtectionKey: NSFileProtectionComplete
                               };
     
     _persistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc]
