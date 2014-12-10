@@ -38,7 +38,7 @@
     NSEntityDescription *entity = [NSEntityDescription entityForName:@"Qualification"
                                               inManagedObjectContext:context];
     [fetchRequest setEntity:entity];
-    [fetchRequest setSortDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"updatedDate" ascending:NO]]];
+    [fetchRequest setSortDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"name" ascending:YES]]];
     
     NSError* fetchError;
     NSArray *array = [context executeFetchRequest:fetchRequest error:&fetchError];
