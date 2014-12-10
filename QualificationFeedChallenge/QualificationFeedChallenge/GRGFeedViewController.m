@@ -8,22 +8,47 @@
 
 #import "GRGFeedViewController.h"
 #import "GRGAPIController.h"
+#import "GRGQualificationTableViewCell.h"
+#import "Qualification.h"
 
 @interface GRGFeedViewController () <UITableViewDataSource, UITableViewDelegate, UIScrollViewDelegate>
-@property (nonatomic,strong) UITableView* feedTableView;
+@property (nonatomic,strong) UITableView* qualificationsTableView;
 @property (nonatomic,strong) UIActivityIndicatorView* activityView;
 @property (nonatomic,strong) NSArray* tableQualifications;
 @end
+
+static NSString* kQualificationCellReuseIdentifier = @"kQualificationCellReuseIdentifier";
 
 @implementation GRGFeedViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    [self.view setBackgroundColor:[UIColor whiteColor]];
+    
+    self.qualificationsTableView = [[UITableView alloc] initWithFrame:CGRectMake(self.view.frame.origin.x,
+                                                                       self.view.frame.size.height,
+                                                                       self.view.frame.size.width,
+                                                                       self.view.frame.size.height)
+                                                      style:UITableViewStylePlain];
+    self.qualificationsTableView.delegate = self;
+    self.qualificationsTableView.dataSource = self;
+    [self.qualificationsTableView registerClass:[GRGQualificationTableViewCell class] forCellReuseIdentifier:kQualificationCellReuseIdentifier];
+    [self.qualificationsTableView setRowHeight:kTableViewCellHeight];
+    [self.view addSubview:self.qualificationsTableView];
+    
     GRGAPIController* apiController = [[GRGAPIController alloc] init];
     __weak GRGFeedViewController* weakSelf = self;
     [apiController downloadAndStoreEntitiesWithCompletion:^(NSError *error, NSArray *qualificationsArray) {
         weakSelf.tableQualifications = qualificationsArray;
+        [weakSelf.qualificationsTableView reloadData];
+        
+        [UIView animateWithDuration:0.3 animations:^{
+            [self.qualificationsTableView setFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
+        }];
+        
     }];
+    
+    self.title = @"Qualifications";
 }
 
 - (void)didReceiveMemoryWarning {
@@ -44,21 +69,12 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    /*
-    GRGFeedTableViewCell* cell = [tableView dequeueReusableCellWithIdentifier:kFeedCellReuseIdentifier forIndexPath:indexPath];
-    [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
-    FeedItem* feedItem = self.tableFeedItems[indexPath.row];
-    [cell setTitleText:feedItem.title];
-    
-    [self.imageController getImageFromFeedItem:feedItem forIndexPath:indexPath withCompletion:^(NSError *error, UIImage *image, BOOL fromCache) {
-        if (!error) {
-            if ([tableView.indexPathsForVisibleRows containsObject:indexPath]) {
-                [cell setPhotoImage:image withAnimation:!fromCache];
-            }
-        }
-    }];
-    */
-    UITableViewCell* cell;
+    GRGQualificationTableViewCell* cell = [tableView dequeueReusableCellWithIdentifier:kQualificationCellReuseIdentifier forIndexPath:indexPath];
+    [cell setSelectionStyle:UITableViewCellSelectionStyleGray];
+    [cell setAccessoryType:UITableViewCellAccessoryDisclosureIndicator];
+    Qualification* qualification = self.tableQualifications[indexPath.row];
+    [cell setNameText:qualification.name];
+    [cell setSubjectCount:[NSString stringWithFormat:@"%@",@(qualification.subjectsForQualification.count)]];
     return cell;
 }
 

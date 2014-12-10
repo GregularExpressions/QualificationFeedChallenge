@@ -36,6 +36,7 @@ static NSString* kAPIEndPoint = @"https://api.gojimo.net/api/v4/qualifications";
                 
                 NSManagedObjectContext* backgroundContext = [[GRGCoreDataController sharedController] getNewBackgroundManagedObjectContext];
                 __block NSArray* managedObjects = [self createAndReturnQualificationsFromParsedJSON:results onContext:backgroundContext];
+                managedObjects = [managedObjects sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"name" ascending:YES]]];
                 // TODO: Handle Core Data save errors:
                 [[GRGCoreDataController sharedController] save:nil onContext:backgroundContext isBackgroundContext:YES];
                 

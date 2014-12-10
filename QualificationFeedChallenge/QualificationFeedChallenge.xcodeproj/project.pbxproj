@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		371197361A38E46800EFE87A /* GRGQualificationTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 371197351A38E46800EFE87A /* GRGQualificationTableViewCell.m */; };
 		378185FD1A37827500600849 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 378185FC1A37827500600849 /* main.m */; };
 		378186001A37827500600849 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 378185FF1A37827500600849 /* AppDelegate.m */; };
 		378186031A37827500600849 /* GRGFeedViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 378186021A37827500600849 /* GRGFeedViewController.m */; };
@@ -31,6 +32,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		371197341A38E46800EFE87A /* GRGQualificationTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GRGQualificationTableViewCell.h; sourceTree = "<group>"; };
+		371197351A38E46800EFE87A /* GRGQualificationTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GRGQualificationTableViewCell.m; sourceTree = "<group>"; };
 		378185F71A37827500600849 /* QualificationFeedChallenge.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = QualificationFeedChallenge.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		378185FB1A37827500600849 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		378185FC1A37827500600849 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -147,6 +150,8 @@
 				378185FF1A37827500600849 /* AppDelegate.m */,
 				378186011A37827500600849 /* GRGFeedViewController.h */,
 				378186021A37827500600849 /* GRGFeedViewController.m */,
+				371197341A38E46800EFE87A /* GRGQualificationTableViewCell.h */,
+				371197351A38E46800EFE87A /* GRGQualificationTableViewCell.m */,
 			);
 			name = "ViewControllers & App Delegate";
 			sourceTree = "<group>";
@@ -265,6 +270,7 @@
 				378186031A37827500600849 /* GRGFeedViewController.m in Sources */,
 				378186241A3784A000600849 /* GRGCoreDataController.m in Sources */,
 				378186001A37827500600849 /* AppDelegate.m in Sources */,
+				371197361A38E46800EFE87A /* GRGQualificationTableViewCell.m in Sources */,
 				378186311A37863600600849 /* Qualification.m in Sources */,
 				378185FD1A37827500600849 /* main.m in Sources */,
 				3781862E1A37863500600849 /* Subject.m in Sources */,
@@ -454,6 +460,7 @@
 				3781861C1A37827500600849 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		3781861D1A37827500600849 /* Build configuration list for PBXNativeTarget "QualificationFeedChallengeTests" */ = {
 			isa = XCConfigurationList;
@@ -462,6 +469,7 @@
 				3781861F1A37827500600849 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 
