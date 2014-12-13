@@ -6,12 +6,13 @@
 //  Copyright (c) 2014 Greg Gunner. All rights reserved.
 //
 
-#import "GRGFeedViewController.h"
+#import "GRGQualificationViewController.h"
 #import "GRGAPIController.h"
 #import "GRGQualificationTableViewCell.h"
 #import "Qualification.h"
+#import "GRGSubjectsViewController.h"
 
-@interface GRGFeedViewController () <UITableViewDataSource, UITableViewDelegate, UIScrollViewDelegate>
+@interface GRGQualificationViewController () <UITableViewDataSource, UITableViewDelegate, UIScrollViewDelegate>
 @property (nonatomic,strong) UITableView* qualificationsTableView;
 @property (nonatomic,strong) UIActivityIndicatorView* activityView;
 @property (nonatomic,strong) NSArray* tableQualifications;
@@ -19,7 +20,7 @@
 
 static NSString* kQualificationCellReuseIdentifier = @"kQualificationCellReuseIdentifier";
 
-@implementation GRGFeedViewController
+@implementation GRGQualificationViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -37,7 +38,7 @@ static NSString* kQualificationCellReuseIdentifier = @"kQualificationCellReuseId
     [self.view addSubview:self.qualificationsTableView];
     
     GRGAPIController* apiController = [[GRGAPIController alloc] init];
-    __weak GRGFeedViewController* weakSelf = self;
+    __weak GRGQualificationViewController* weakSelf = self;
     [apiController downloadAndStoreEntitiesWithCompletion:^(NSError *error, NSArray *qualificationsArray) {
         weakSelf.tableQualifications = qualificationsArray;
         [weakSelf.qualificationsTableView reloadData];
@@ -81,6 +82,9 @@ static NSString* kQualificationCellReuseIdentifier = @"kQualificationCellReuseId
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    Qualification* qualification = self.tableQualifications[indexPath.row];
+    GRGSubjectsViewController* subjectsViewController = [[GRGSubjectsViewController alloc] initWithQualification:qualification];
+    [self.navigationController pushViewController:subjectsViewController animated:YES];
 }
 
 @end

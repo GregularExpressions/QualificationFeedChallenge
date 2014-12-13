@@ -8,9 +8,11 @@
 
 /* Begin PBXBuildFile section */
 		371197361A38E46800EFE87A /* GRGQualificationTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 371197351A38E46800EFE87A /* GRGQualificationTableViewCell.m */; };
+		371BE0EE1A3B1C5200B88280 /* GRGSubjectsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 371BE0ED1A3B1C5200B88280 /* GRGSubjectsViewController.m */; };
+		371BE0F21A3B1D2400B88280 /* GRGSubjectTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 371BE0F11A3B1D2400B88280 /* GRGSubjectTableViewCell.m */; };
 		378185FD1A37827500600849 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 378185FC1A37827500600849 /* main.m */; };
 		378186001A37827500600849 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 378185FF1A37827500600849 /* AppDelegate.m */; };
-		378186031A37827500600849 /* GRGFeedViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 378186021A37827500600849 /* GRGFeedViewController.m */; };
+		378186031A37827500600849 /* GRGQualificationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 378186021A37827500600849 /* GRGQualificationViewController.m */; };
 		378186081A37827500600849 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 378186071A37827500600849 /* Images.xcassets */; };
 		3781860B1A37827500600849 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 378186091A37827500600849 /* LaunchScreen.xib */; };
 		378186171A37827500600849 /* QualificationFeedChallengeTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 378186161A37827500600849 /* QualificationFeedChallengeTests.m */; };
@@ -34,13 +36,17 @@
 /* Begin PBXFileReference section */
 		371197341A38E46800EFE87A /* GRGQualificationTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GRGQualificationTableViewCell.h; sourceTree = "<group>"; };
 		371197351A38E46800EFE87A /* GRGQualificationTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GRGQualificationTableViewCell.m; sourceTree = "<group>"; };
+		371BE0EC1A3B1C5200B88280 /* GRGSubjectsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GRGSubjectsViewController.h; sourceTree = "<group>"; };
+		371BE0ED1A3B1C5200B88280 /* GRGSubjectsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GRGSubjectsViewController.m; sourceTree = "<group>"; };
+		371BE0F01A3B1D2400B88280 /* GRGSubjectTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GRGSubjectTableViewCell.h; sourceTree = "<group>"; };
+		371BE0F11A3B1D2400B88280 /* GRGSubjectTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GRGSubjectTableViewCell.m; sourceTree = "<group>"; };
 		378185F71A37827500600849 /* QualificationFeedChallenge.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = QualificationFeedChallenge.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		378185FB1A37827500600849 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		378185FC1A37827500600849 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		378185FE1A37827500600849 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		378185FF1A37827500600849 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		378186011A37827500600849 /* GRGFeedViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GRGFeedViewController.h; sourceTree = "<group>"; };
-		378186021A37827500600849 /* GRGFeedViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GRGFeedViewController.m; sourceTree = "<group>"; };
+		378186011A37827500600849 /* GRGQualificationViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GRGQualificationViewController.h; sourceTree = "<group>"; };
+		378186021A37827500600849 /* GRGQualificationViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GRGQualificationViewController.m; sourceTree = "<group>"; };
 		378186071A37827500600849 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		3781860A1A37827500600849 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
 		378186101A37827500600849 /* QualificationFeedChallengeTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = QualificationFeedChallengeTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -75,6 +81,17 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		371BE0EF1A3B1D0200B88280 /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				371197341A38E46800EFE87A /* GRGQualificationTableViewCell.h */,
+				371197351A38E46800EFE87A /* GRGQualificationTableViewCell.m */,
+				371BE0F01A3B1D2400B88280 /* GRGSubjectTableViewCell.h */,
+				371BE0F11A3B1D2400B88280 /* GRGSubjectTableViewCell.m */,
+			);
+			name = Cells;
+			sourceTree = "<group>";
+		};
 		378185EE1A37827500600849 = {
 			isa = PBXGroup;
 			children = (
@@ -146,12 +163,13 @@
 		378186271A3784AA00600849 /* ViewControllers & App Delegate */ = {
 			isa = PBXGroup;
 			children = (
+				371BE0EF1A3B1D0200B88280 /* Cells */,
 				378185FE1A37827500600849 /* AppDelegate.h */,
 				378185FF1A37827500600849 /* AppDelegate.m */,
-				378186011A37827500600849 /* GRGFeedViewController.h */,
-				378186021A37827500600849 /* GRGFeedViewController.m */,
-				371197341A38E46800EFE87A /* GRGQualificationTableViewCell.h */,
-				371197351A38E46800EFE87A /* GRGQualificationTableViewCell.m */,
+				378186011A37827500600849 /* GRGQualificationViewController.h */,
+				378186021A37827500600849 /* GRGQualificationViewController.m */,
+				371BE0EC1A3B1C5200B88280 /* GRGSubjectsViewController.h */,
+				371BE0ED1A3B1C5200B88280 /* GRGSubjectsViewController.m */,
 			);
 			name = "ViewControllers & App Delegate";
 			sourceTree = "<group>";
@@ -267,14 +285,16 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				378186031A37827500600849 /* GRGFeedViewController.m in Sources */,
+				378186031A37827500600849 /* GRGQualificationViewController.m in Sources */,
 				378186241A3784A000600849 /* GRGCoreDataController.m in Sources */,
 				378186001A37827500600849 /* AppDelegate.m in Sources */,
+				371BE0F21A3B1D2400B88280 /* GRGSubjectTableViewCell.m in Sources */,
 				371197361A38E46800EFE87A /* GRGQualificationTableViewCell.m in Sources */,
 				378186311A37863600600849 /* Qualification.m in Sources */,
 				378185FD1A37827500600849 /* main.m in Sources */,
 				3781862E1A37863500600849 /* Subject.m in Sources */,
 				378186251A3784A000600849 /* GRGAPIController.m in Sources */,
+				371BE0EE1A3B1C5200B88280 /* GRGSubjectsViewController.m in Sources */,
 				3781862B1A3784F500600849 /* Model.xcdatamodeld in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

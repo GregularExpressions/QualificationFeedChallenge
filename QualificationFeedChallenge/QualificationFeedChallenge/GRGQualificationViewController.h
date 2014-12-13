@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface GRGFeedViewController : UIViewController
+@interface GRGQualificationViewController : UIViewController
 
 
 @end

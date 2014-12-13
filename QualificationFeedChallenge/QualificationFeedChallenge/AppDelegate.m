@@ -7,10 +7,10 @@
 //
 
 #import "AppDelegate.h"
-#import "GRGFeedViewController.h"
+#import "GRGQualificationViewController.h"
 
 @interface AppDelegate ()
-@property (nonatomic,strong) GRGFeedViewController* feedViewController;
+@property (nonatomic,strong) GRGQualificationViewController* qualificationViewController;
 @end
 
 @implementation AppDelegate
@@ -19,10 +19,11 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-    self.feedViewController = [[GRGFeedViewController alloc] init];
-    UINavigationController* feedNavController = [[UINavigationController alloc] initWithRootViewController:self.feedViewController];
+    self.qualificationViewController = [[GRGQualificationViewController alloc] init];
+    UINavigationController* feedNavController = [[UINavigationController alloc] initWithRootViewController:self.qualificationViewController];
     feedNavController.navigationBar.barTintColor = [UIColor colorWithRed:238.0/255.0 green:156.0/255.0 blue:39.0/255.0 alpha:1.0];
     [feedNavController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName:[UIColor whiteColor]}];
+    [feedNavController.navigationBar setTintColor:[UIColor whiteColor]];
     self.window.rootViewController = feedNavController;
     [self.window makeKeyAndVisible];
     return YES;
