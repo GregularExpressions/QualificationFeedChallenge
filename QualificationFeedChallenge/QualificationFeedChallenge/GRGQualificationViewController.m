@@ -1,5 +1,5 @@
 //
-//  ViewController.m
+//  GRGQualificationViewController.m
 //  QualificationFeedChallenge
 //
 //  Created by Greg Gunner on 09/12/2014.
