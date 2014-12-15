@@ -10,6 +10,7 @@
 #import "GRGCoreDataController.h"
 
 static NSString* kAPIEndPoint = @"https://api.gojimo.net/api/v4/qualifications";
+static NSString* kAPILastUpdatedDefaultsKey = @"kAPILastUpdatedDefaultsKey";
 
 @implementation GRGAPIController
 - (void) downloadAndStoreEntitiesWithCompletion:(void (^)(NSError* error, NSArray* qualificationsArray))completion
@@ -104,6 +105,14 @@ static NSString* kAPIEndPoint = @"https://api.gojimo.net/api/v4/qualifications";
     
     NSMutableArray *result;
     if (!connectionError && responseData) {
+        
+        // Fri, 05 Dec 2014 12:28:27 GMT
+        NSString* lastModified = response.allHeaderFields[@"Last-Modified"];
+        NSDateFormatter* dateFormatter = [[NSDateFormatter alloc] init];
+        [dateFormatter setDateFormat:@"EEE',' dd MMM yyyy HH:mm:ss zzz"];
+        NSDate* lastModifiedDate = [dateFormatter dateFromString:lastModified];
+        [[NSUserDefaults standardUserDefaults] setObject:lastModifiedDate forKey:kAPILastUpdatedDefaultsKey];
+        
         // Parse the response:
         result = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONReadingMutableContainers error:nil];
         
@@ -123,5 +132,13 @@ static NSString* kAPIEndPoint = @"https://api.gojimo.net/api/v4/qualifications";
     
     return result;
 }
+
+#pragma mark - Last Modified
+
+- (NSDate*) apiLastModifiedDate
+{
+    return [[NSUserDefaults standardUserDefaults] objectForKey:kAPILastUpdatedDefaultsKey];
+}
+
 
 @end

@@ -16,4 +16,5 @@
  *  The block that will be called on the Main Thread once the operations are complete
 */
 - (void) downloadAndStoreEntitiesWithCompletion:(void (^)(NSError* error, NSArray* qualificationsArray))completion;
+- (NSDate*) apiLastModifiedDate;
 @end
