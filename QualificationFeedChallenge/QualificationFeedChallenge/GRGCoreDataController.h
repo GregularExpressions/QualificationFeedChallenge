@@ -31,5 +31,7 @@
 #pragma mark - ManagedObjects:
 - (Qualification*) getNewQualificationItemOnManagedObjectContext:(NSManagedObjectContext*)context;
 - (NSArray*) getAllQualificationsOnManagedObjectContext:(NSManagedObjectContext*)context;
+- (NSArray*) getAllQualificationsOnManagedObjectContext:(NSManagedObjectContext*)context whereQualificationIDIn:(NSArray*)qualificationIDs;
 - (Subject*) getNewSubjectOnManagedObjectContext:(NSManagedObjectContext*)context;
+- (NSArray*) getAllSubjectOnManagedObjectContext:(NSManagedObjectContext*)context whereSubjectIDIn:(NSArray*)subjectIDs;
 @end

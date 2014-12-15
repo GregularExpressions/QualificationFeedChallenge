@@ -10,11 +10,8 @@
 
 @interface GRGAPIController : NSObject
 /**
- *  Hit the web endpoint for the FeedItems, store them in Core Data and return
- *  on the Main Thread with the saved NSManagedObjects.
- *  @param completion
- *  The block that will be called on the Main Thread once the operations are complete
-*/
-- (void) downloadAndStoreEntitiesWithCompletion:(void (^)(NSError* error, NSArray* qualificationsArray))completion;
-- (NSDate*) apiLastModifiedDate;
+ * On a background thread hit the API to confirm last modified, optionally
+ * update Core Data and return NSManagedObjects.
+ */
+- (void) getDataWithCompletion:(void (^)(NSError* error, NSArray* qualificationsArray))completion;
 @end

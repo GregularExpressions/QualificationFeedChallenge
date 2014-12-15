@@ -39,14 +39,13 @@ static NSString* kQualificationCellReuseIdentifier = @"kQualificationCellReuseId
     
     GRGAPIController* apiController = [[GRGAPIController alloc] init];
     __weak GRGQualificationViewController* weakSelf = self;
-    [apiController downloadAndStoreEntitiesWithCompletion:^(NSError *error, NSArray *qualificationsArray) {
+    [apiController getDataWithCompletion:^(NSError *error, NSArray *qualificationsArray) {
         weakSelf.tableQualifications = qualificationsArray;
         [weakSelf.qualificationsTableView reloadData];
         
         [UIView animateWithDuration:0.3 animations:^{
             [self.qualificationsTableView setFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
         }];
-        
     }];
     
     self.title = @"Qualifications";

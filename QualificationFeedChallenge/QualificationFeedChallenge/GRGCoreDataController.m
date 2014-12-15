@@ -49,11 +49,49 @@
     return array;
 }
 
+- (NSArray*) getAllQualificationsOnManagedObjectContext:(NSManagedObjectContext*)context whereQualificationIDIn:(NSArray*)qualificationIDs
+{
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    
+    NSEntityDescription *entity = [NSEntityDescription entityForName:@"Qualification"
+                                              inManagedObjectContext:context];
+    [fetchRequest setEntity:entity];
+    [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"qualificationID IN %@",qualificationIDs]];
+    [fetchRequest setSortDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"name" ascending:YES]]];
+    
+    NSError* fetchError;
+    NSArray *array = [context executeFetchRequest:fetchRequest error:&fetchError];
+    if (fetchError) {
+        NSLog(@"%s : %@",__PRETTY_FUNCTION__,fetchError);
+    }
+    
+    return array;
+}
+
 #pragma mark - Subject
 - (Subject*) getNewSubjectOnManagedObjectContext:(NSManagedObjectContext*)context
 {
     Subject* newSubject = [NSEntityDescription insertNewObjectForEntityForName:@"Subject" inManagedObjectContext:context];
     return newSubject;
+}
+
+- (NSArray*) getAllSubjectOnManagedObjectContext:(NSManagedObjectContext*)context whereSubjectIDIn:(NSArray*)subjectIDs
+{
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    
+    NSEntityDescription *entity = [NSEntityDescription entityForName:@"Subject"
+                                              inManagedObjectContext:context];
+    [fetchRequest setEntity:entity];
+    [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"subjectID IN %@",subjectIDs]];
+    [fetchRequest setSortDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"title" ascending:YES]]];
+    
+    NSError* fetchError;
+    NSArray *array = [context executeFetchRequest:fetchRequest error:&fetchError];
+    if (fetchError) {
+        NSLog(@"%s : %@",__PRETTY_FUNCTION__,fetchError);
+    }
+    
+    return array;
 }
 
 #pragma mark - Core Data

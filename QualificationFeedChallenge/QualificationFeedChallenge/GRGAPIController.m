@@ -13,50 +13,94 @@ static NSString* kAPIEndPoint = @"https://api.gojimo.net/api/v4/qualifications";
 static NSString* kAPILastUpdatedDefaultsKey = @"kAPILastUpdatedDefaultsKey";
 
 @implementation GRGAPIController
-- (void) downloadAndStoreEntitiesWithCompletion:(void (^)(NSError* error, NSArray* qualificationsArray))completion
+
+- (void) getDataWithCompletion:(void (^)(NSError* error, NSArray* qualificationsArray))completion
 {
-    // On cold launch the user will be waiting for this, so it's high priority.
-    // Given the simplicity of the download we can avoid anything more complex
-    // like a dedicated dispatch queue or NSOperationQueue
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
         
-        NSManagedObjectContext* backgroundContext = [[GRGCoreDataController sharedController] getNewBackgroundManagedObjectContext];
-        __block NSArray* managedObjects = [[GRGCoreDataController sharedController] getAllQualificationsOnManagedObjectContext:backgroundContext];
+        // Make the HTTP request to the API:
+        NSHTTPURLResponse *response;
+        NSURL *url = [NSURL URLWithString:kAPIEndPoint];
+        NSURLRequest *request = [[NSURLRequest alloc]initWithURL:url];
+        NSError* connectionError;
+        NSData *responseData = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&connectionError];
         
-        if (managedObjects && managedObjects.count > 0) {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                NSManagedObjectContext* mainThreadContext = [[GRGCoreDataController sharedController] managedObjectContext];
-                managedObjects = [[GRGCoreDataController sharedController] moveManagedObjects:managedObjects toContext:mainThreadContext];
-                completion(nil,managedObjects);
-            });
-        } else {
-            // We don't have the data already, download:
-            NSArray* results = [self downloadJSON];
+        NSMutableArray *result;
+        __block NSDate* apiLastModifiedDate;
+        if (!connectionError && responseData) {
             
-            if (results) {
-                
-                NSManagedObjectContext* backgroundContext = [[GRGCoreDataController sharedController] getNewBackgroundManagedObjectContext];
-                __block NSArray* managedObjects = [self createAndReturnQualificationsFromParsedJSON:results onContext:backgroundContext];
-
-                // TODO: Handle Core Data save errors:
-                [[GRGCoreDataController sharedController] save:nil onContext:backgroundContext isBackgroundContext:YES];
-                
+            // Extract and Date Format the last modified header:
+            NSString* lastModified = response.allHeaderFields[@"Last-Modified"];
+            NSDateFormatter* dateFormatter = [[NSDateFormatter alloc] init];
+            [dateFormatter setDateFormat:@"EEE',' dd MMM yyyy HH:mm:ss zzz"]; // Fri, 05 Dec 2014 12:28:27 GMT
+            apiLastModifiedDate = [dateFormatter dateFromString:lastModified];
+            
+            // Get our latest modified date out for comparison:
+            NSDate* coreDataLastUpdateDate = [[NSUserDefaults standardUserDefaults] objectForKey:kAPILastUpdatedDefaultsKey];
+            
+            // Prep for our core data work:
+            NSManagedObjectContext* backgroundContext = [[GRGCoreDataController sharedController] getNewBackgroundManagedObjectContext];
+            __block NSArray* qualifications;
+            
+            // Parse the JSON:
+            result = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONReadingMutableContainers error:nil];
+            for (NSMutableDictionary *dic in result)
+            {
+                NSString *string = dic[@"array"];
+                if (string)
+                {
+                    NSData *data = [string dataUsingEncoding:NSUTF8StringEncoding];
+                    dic[@"array"] = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
+                }
+            }
+            
+            // Compare the API's last modified date against our last updated date:
+            if ([apiLastModifiedDate timeIntervalSinceDate:coreDataLastUpdateDate] <= 0) {
+                // We're up to date, return existing data:
+                qualifications = [[GRGCoreDataController sharedController] getAllQualificationsOnManagedObjectContext:backgroundContext];
                 if (completion) {
                     dispatch_async(dispatch_get_main_queue(), ^{
                         NSManagedObjectContext* mainThreadContext = [[GRGCoreDataController sharedController] managedObjectContext];
-                        managedObjects = [[GRGCoreDataController sharedController] moveManagedObjects:managedObjects toContext:mainThreadContext];
-                        managedObjects = [managedObjects sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"name" ascending:YES]]];
-                        completion(nil,managedObjects);
+                        qualifications = [[GRGCoreDataController sharedController] moveManagedObjects:qualifications toContext:mainThreadContext];
+                        qualifications = [qualifications sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"name" ascending:YES]]];
+                        completion(nil,qualifications);
                     });
+                }
+            } else {
+                // API has newer data so parse the data:
+                result = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONReadingMutableContainers error:nil];
+                for (NSMutableDictionary *dic in result)
+                {
+                    NSString *string = dic[@"array"];
+                    if (string)
+                    {
+                        NSData *data = [string dataUsingEncoding:NSUTF8StringEncoding];
+                        dic[@"array"] = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
+                    }
                 }
                 
-            } else {
-                if (completion) {
-                    dispatch_async(dispatch_get_main_queue(), ^{
-                        completion(nil,nil);
-                    });
-                }
+                // Create / Update Qualifications and their Subjects:
+                qualifications = [self createAndReturnQualificationsFromParsedJSON:result onContext:backgroundContext];
+                [[GRGCoreDataController sharedController] save:nil onContext:backgroundContext isBackgroundContext:YES];
+                
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    NSManagedObjectContext* mainThreadContext = [[GRGCoreDataController sharedController] managedObjectContext];
+                    qualifications = [[GRGCoreDataController sharedController] moveManagedObjects:qualifications toContext:mainThreadContext];
+                    qualifications = [qualifications sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"name" ascending:YES]]];
+                    completion(nil,qualifications);
+                });
+                
             }
+
+        } else {
+            NSLog(@"Error downloading content from %@: %@",kAPIEndPoint,connectionError);
+            // TODO: Handle obvious errors like timeouts, lack of connectivity and report to the user.
+        }
+        
+        // Update our last updated date for next time:
+        if (apiLastModifiedDate) {
+            [[NSUserDefaults standardUserDefaults] setObject:apiLastModifiedDate forKey:kAPILastUpdatedDefaultsKey];
+            [[NSUserDefaults standardUserDefaults] synchronize];
         }
     });
 }
@@ -68,9 +112,29 @@ static NSString* kAPILastUpdatedDefaultsKey = @"kAPILastUpdatedDefaultsKey";
     NSDateFormatter* dateFormatter = [[NSDateFormatter alloc] init];
     [dateFormatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"]; // 2014-04-12T10:06:33.000Z
     
+    // Quick short loop to find all the qualificationIDs we'll need to query with:
+    NSMutableSet* potentialExistingQualificationIDs = [NSMutableSet set];
+    for (NSDictionary* dict in parsedJSON) {
+        [potentialExistingQualificationIDs addObject:dict[@"id"]];
+    }
+    NSArray* existingQualifications = [[GRGCoreDataController sharedController] getAllQualificationsOnManagedObjectContext:context whereQualificationIDIn:potentialExistingQualificationIDs.allObjects];
+    
     for (NSDictionary* dict in parsedJSON) {
         
-        Qualification* newQualification = [[GRGCoreDataController sharedController] getNewQualificationItemOnManagedObjectContext:context];
+        Qualification* newQualification;
+        // Check for existing Qualifications to update:
+        for (Qualification* qualification in existingQualifications) {
+            if ([qualification.qualificationID isEqualToString:dict[@"id"]]) {
+                newQualification = qualification;
+                break;
+            }
+        }
+        
+        // No existing qualification matching, create a new one:
+        if (!newQualification) {
+            newQualification = [[GRGCoreDataController sharedController] getNewQualificationItemOnManagedObjectContext:context];
+        }
+        
         newQualification.qualificationID = dict[@"id"];
         newQualification.name = dict[@"name"];
         newQualification.link = dict[@"link"];
@@ -78,13 +142,40 @@ static NSString* kAPILastUpdatedDefaultsKey = @"kAPILastUpdatedDefaultsKey";
         newQualification.updatedDate = [dateFormatter dateFromString:dict[@"updated_at"]];
 
         if (dict[@"subjects"] && [dict[@"subjects"] isKindOfClass:[NSArray class]]) {
+            
+            // Quick short loop to find all the qualificationIDs we'll need to query with:
+            NSMutableSet* potentialExistingSubjectIDs = [NSMutableSet set];
             for (NSDictionary* subjectDict in dict[@"subjects"]) {
-                Subject* newSubject = [[GRGCoreDataController sharedController] getNewSubjectOnManagedObjectContext:context];
+                [potentialExistingSubjectIDs addObject:subjectDict[@"id"]];
+            }
+            NSArray* existingSubjects = [[GRGCoreDataController sharedController] getAllSubjectOnManagedObjectContext:context whereSubjectIDIn:potentialExistingSubjectIDs.allObjects];
+            
+            for (NSDictionary* subjectDict in dict[@"subjects"]) {
+                
+                Subject* newSubject;
+                // Check for existing subject to update:
+                for (Subject* subject in existingSubjects) {
+                    if ([subject.subjectID isEqualToString:subjectDict[@"id"]]) {
+                        newSubject = subject;
+                        break;
+                    }
+                }
+                
+                // No existing subject matching, create a new one:
+                if (!newSubject) {
+                    newSubject = [[GRGCoreDataController sharedController] getNewSubjectOnManagedObjectContext:context];
+                }
+                
                 newSubject.subjectID = subjectDict[@"id"];
                 newSubject.title = subjectDict[@"title"];
                 newSubject.link = subjectDict[@"link"];
-                dict[@"colour"] ? newSubject.colour = dict[@"colour"] : nil;
-                [newQualification addSubjectsForQualificationObject:newSubject];
+                if ([subjectDict[@"colour"] isEqual:[NSNull null]] == NO) {
+                    newSubject.colour = subjectDict[@"colour"];
+                }
+                
+                if (!newSubject.qualificationForSubject) {
+                    [newQualification addSubjectsForQualificationObject:newSubject];
+                }
             }
         }
         
@@ -92,53 +183,4 @@ static NSString* kAPILastUpdatedDefaultsKey = @"kAPILastUpdatedDefaultsKey";
     }
     return managedObjects;
 }
-
-#pragma mark - JSON
-- (NSArray*) downloadJSON
-{
-    // Hit the endpoint for data:
-    NSHTTPURLResponse *response = nil;
-    NSURL *url = [NSURL URLWithString:kAPIEndPoint];
-    NSURLRequest *request = [[NSURLRequest alloc]initWithURL:url];
-    NSError* connectionError;
-    NSData *responseData = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&connectionError];
-    
-    NSMutableArray *result;
-    if (!connectionError && responseData) {
-        
-        // Fri, 05 Dec 2014 12:28:27 GMT
-        NSString* lastModified = response.allHeaderFields[@"Last-Modified"];
-        NSDateFormatter* dateFormatter = [[NSDateFormatter alloc] init];
-        [dateFormatter setDateFormat:@"EEE',' dd MMM yyyy HH:mm:ss zzz"];
-        NSDate* lastModifiedDate = [dateFormatter dateFromString:lastModified];
-        [[NSUserDefaults standardUserDefaults] setObject:lastModifiedDate forKey:kAPILastUpdatedDefaultsKey];
-        
-        // Parse the response:
-        result = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONReadingMutableContainers error:nil];
-        
-        for (NSMutableDictionary *dic in result)
-        {
-            NSString *string = dic[@"array"];
-            if (string)
-            {
-                NSData *data = [string dataUsingEncoding:NSUTF8StringEncoding];
-                dic[@"array"] = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
-            }
-        }
-    } else {
-        NSLog(@"Error downloading content from %@: %@",kAPIEndPoint,connectionError);
-        // TODO: Handle obvious errors like timeouts, lack of connectivity and report to the user.
-    }
-    
-    return result;
-}
-
-#pragma mark - Last Modified
-
-- (NSDate*) apiLastModifiedDate
-{
-    return [[NSUserDefaults standardUserDefaults] objectForKey:kAPILastUpdatedDefaultsKey];
-}
-
-
 @end
