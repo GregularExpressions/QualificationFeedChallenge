@@ -52,7 +52,6 @@ static NSString* kSubjectCellReuseIdentifier = @"kSubjectCellReuseIdentifier";
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
 
 #pragma mark - TableView
@@ -77,7 +76,7 @@ static NSString* kSubjectCellReuseIdentifier = @"kSubjectCellReuseIdentifier";
     
     if (subject.colour && subject.colour.length > 0) {
         UIColor* subjectColor = [UIColor colorFromHexString:subject.colour];
-        UIImage* colorImage = [self roundImageOfColour:subjectColor size:CGSizeMake(kColourSize, kColourSize) andWithText:@""];
+        UIImage* colorImage = [self roundImageOfColour:subjectColor size:CGSizeMake(kColourSize, kColourSize)];
         [cell setSubjectImage:colorImage];
     }
     
@@ -91,13 +90,8 @@ static NSString* kSubjectCellReuseIdentifier = @"kSubjectCellReuseIdentifier";
 
 #pragma mark - Colours
 
-- (UIImage *) roundImageOfColour:(UIColor*)color size:(CGSize)size andWithText:(NSString*)text
+- (UIImage *) roundImageOfColour:(UIColor*)color size:(CGSize)size
 {
-    UIFont* fontToUse = [UIFont fontWithName:@"HelveticaNeue-Light" size:8.0f];;
-    if (size.height > 40) {
-        fontToUse = [UIFont fontWithName:@"HelveticaNeue-UltraLight" size:18.0f];
-    }
-    
     UIBezierPath* circlePath = [UIBezierPath bezierPathWithOvalInRect:CGRectMake(0, 0, size.width, size.height)];
     UIGraphicsBeginImageContextWithOptions(CGSizeMake(size.width, size.height), NO, 2.0);
     CGContextRef context = UIGraphicsGetCurrentContext();
@@ -107,9 +101,6 @@ static NSString* kSubjectCellReuseIdentifier = @"kSubjectCellReuseIdentifier";
     
     [color setFill];
     [circlePath fill];
-    
-    CGSize textSize = [text sizeWithAttributes:@{NSFontAttributeName:fontToUse}];
-    [text drawAtPoint:CGPointMake((size.width/2) - (textSize.width/2), (size.height/2) - (textSize.height/2)) withAttributes:@{NSFontAttributeName:fontToUse}];
     
     UIGraphicsPopContext();
     UIImage *outputImage = UIGraphicsGetImageFromCurrentImageContext();
