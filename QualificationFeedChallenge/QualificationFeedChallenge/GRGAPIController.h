@@ -11,7 +11,7 @@
 @interface GRGAPIController : NSObject
 /**
  * On a background thread hit the API to confirm last modified, optionally
- * update Core Data and return NSManagedObjects.
+ * update Core Data and return Main Thread NSManagedObjects.
  */
 - (void) getDataWithCompletion:(void (^)(NSError* error, NSArray* qualificationsArray))completion;
 @end

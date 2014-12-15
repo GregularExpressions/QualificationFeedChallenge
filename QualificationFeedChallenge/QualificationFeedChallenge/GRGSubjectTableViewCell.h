@@ -9,6 +9,8 @@
 #import <UIKit/UIKit.h>
 
 static CGFloat kSubjectTableViewCellHeight = 44.0f;
+static CGFloat kColourSize = 20.0f;
 @interface GRGSubjectTableViewCell : UITableViewCell
 - (void) setSubjectTitle:(NSString*)title;
+- (void) setSubjectImage:(UIImage*)subjectImage;
 @end

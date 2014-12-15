@@ -9,6 +9,7 @@
 #import "GRGSubjectsViewController.h"
 #import "GRGSubjectTableViewCell.h"
 #import "Subject.h"
+#import "UIColor+HexColor.h"
 
 @interface GRGSubjectsViewController ()  <UITableViewDataSource, UITableViewDelegate, UIScrollViewDelegate>
 @property (nonatomic,strong) UITableView* subjectsTableView;
@@ -74,12 +75,46 @@ static NSString* kSubjectCellReuseIdentifier = @"kSubjectCellReuseIdentifier";
     Subject* subject = self.tableSubjects[indexPath.row];
     [cell setSubjectTitle:subject.title];
     
+    if (subject.colour && subject.colour.length > 0) {
+        UIColor* subjectColor = [UIColor colorFromHexString:subject.colour];
+        UIImage* colorImage = [self roundImageOfColour:subjectColor size:CGSizeMake(kColourSize, kColourSize) andWithText:@""];
+        [cell setSubjectImage:colorImage];
+    }
+    
     return cell;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
+}
+
+#pragma mark - Colours
+
+- (UIImage *) roundImageOfColour:(UIColor*)color size:(CGSize)size andWithText:(NSString*)text
+{
+    UIFont* fontToUse = [UIFont fontWithName:@"HelveticaNeue-Light" size:8.0f];;
+    if (size.height > 40) {
+        fontToUse = [UIFont fontWithName:@"HelveticaNeue-UltraLight" size:18.0f];
+    }
+    
+    UIBezierPath* circlePath = [UIBezierPath bezierPathWithOvalInRect:CGRectMake(0, 0, size.width, size.height)];
+    UIGraphicsBeginImageContextWithOptions(CGSizeMake(size.width, size.height), NO, 2.0);
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    CGContextAddPath(context,circlePath.CGPath);
+    CGContextClip(context);
+    UIGraphicsPushContext(context);
+    
+    [color setFill];
+    [circlePath fill];
+    
+    CGSize textSize = [text sizeWithAttributes:@{NSFontAttributeName:fontToUse}];
+    [text drawAtPoint:CGPointMake((size.width/2) - (textSize.width/2), (size.height/2) - (textSize.height/2)) withAttributes:@{NSFontAttributeName:fontToUse}];
+    
+    UIGraphicsPopContext();
+    UIImage *outputImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    return outputImage;
 }
 
 @end

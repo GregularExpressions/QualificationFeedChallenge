@@ -21,6 +21,7 @@
 		3781862B1A3784F500600849 /* Model.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 378186291A3784F500600849 /* Model.xcdatamodeld */; };
 		3781862E1A37863500600849 /* Subject.m in Sources */ = {isa = PBXBuildFile; fileRef = 3781862D1A37863500600849 /* Subject.m */; };
 		378186311A37863600600849 /* Qualification.m in Sources */ = {isa = PBXBuildFile; fileRef = 378186301A37863600600849 /* Qualification.m */; };
+		37ECE5601A3F4A1400739A67 /* UIColor+HexColor.m in Sources */ = {isa = PBXBuildFile; fileRef = 37ECE55F1A3F4A1400739A67 /* UIColor+HexColor.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -61,6 +62,8 @@
 		3781862D1A37863500600849 /* Subject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Subject.m; sourceTree = "<group>"; };
 		3781862F1A37863600600849 /* Qualification.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Qualification.h; sourceTree = "<group>"; };
 		378186301A37863600600849 /* Qualification.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Qualification.m; sourceTree = "<group>"; };
+		37ECE55E1A3F4A1400739A67 /* UIColor+HexColor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+HexColor.h"; sourceTree = "<group>"; };
+		37ECE55F1A3F4A1400739A67 /* UIColor+HexColor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+HexColor.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -113,6 +116,7 @@
 		378185F91A37827500600849 /* QualificationFeedChallenge */ = {
 			isa = PBXGroup;
 			children = (
+				37ECE55D1A3F49E600739A67 /* Categories */,
 				378186281A3784DE00600849 /* Core Data */,
 				378186261A3784A400600849 /* Controllers */,
 				378186071A37827500600849 /* Images.xcassets */,
@@ -184,6 +188,15 @@
 				3781862D1A37863500600849 /* Subject.m */,
 			);
 			name = "Core Data";
+			sourceTree = "<group>";
+		};
+		37ECE55D1A3F49E600739A67 /* Categories */ = {
+			isa = PBXGroup;
+			children = (
+				37ECE55E1A3F4A1400739A67 /* UIColor+HexColor.h */,
+				37ECE55F1A3F4A1400739A67 /* UIColor+HexColor.m */,
+			);
+			name = Categories;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -290,6 +303,7 @@
 				378186001A37827500600849 /* AppDelegate.m in Sources */,
 				371BE0F21A3B1D2400B88280 /* GRGSubjectTableViewCell.m in Sources */,
 				371197361A38E46800EFE87A /* GRGQualificationTableViewCell.m in Sources */,
+				37ECE5601A3F4A1400739A67 /* UIColor+HexColor.m in Sources */,
 				378186311A37863600600849 /* Qualification.m in Sources */,
 				378185FD1A37827500600849 /* main.m in Sources */,
 				3781862E1A37863500600849 /* Subject.m in Sources */,
