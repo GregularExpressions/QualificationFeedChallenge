@@ -71,8 +71,12 @@ static NSString* kQualificationCellReuseIdentifier = @"kQualificationCellReuseId
 {
     GRGQualificationTableViewCell* cell = [tableView dequeueReusableCellWithIdentifier:kQualificationCellReuseIdentifier forIndexPath:indexPath];
     [cell setSelectionStyle:UITableViewCellSelectionStyleGray];
-    [cell setAccessoryType:UITableViewCellAccessoryDisclosureIndicator];
     Qualification* qualification = self.tableQualifications[indexPath.row];
+    
+    if (qualification.subjectsForQualification.count > 0) {
+        [cell setAccessoryType:UITableViewCellAccessoryDisclosureIndicator];
+    }
+    
     [cell setNameText:qualification.name];
     [cell setSubjectCount:[NSString stringWithFormat:@"%@",@(qualification.subjectsForQualification.count)]];
     return cell;
@@ -82,8 +86,10 @@ static NSString* kQualificationCellReuseIdentifier = @"kQualificationCellReuseId
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     Qualification* qualification = self.tableQualifications[indexPath.row];
-    GRGSubjectsViewController* subjectsViewController = [[GRGSubjectsViewController alloc] initWithQualification:qualification];
-    [self.navigationController pushViewController:subjectsViewController animated:YES];
+    if (qualification.subjectsForQualification.count > 0) {
+        GRGSubjectsViewController* subjectsViewController = [[GRGSubjectsViewController alloc] initWithQualification:qualification];
+        [self.navigationController pushViewController:subjectsViewController animated:YES];
+    }
 }
 
 @end
