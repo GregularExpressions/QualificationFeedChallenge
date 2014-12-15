@@ -20,11 +20,11 @@
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     self.qualificationViewController = [[GRGQualificationViewController alloc] init];
-    UINavigationController* feedNavController = [[UINavigationController alloc] initWithRootViewController:self.qualificationViewController];
-    feedNavController.navigationBar.barTintColor = [UIColor colorWithRed:238.0/255.0 green:156.0/255.0 blue:39.0/255.0 alpha:1.0];
-    [feedNavController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName:[UIColor whiteColor]}];
-    [feedNavController.navigationBar setTintColor:[UIColor whiteColor]];
-    self.window.rootViewController = feedNavController;
+    UINavigationController* navigationController = [[UINavigationController alloc] initWithRootViewController:self.qualificationViewController];
+    navigationController.navigationBar.barTintColor = [UIColor colorWithRed:238.0/255.0 green:156.0/255.0 blue:39.0/255.0 alpha:1.0];
+    [navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName:[UIColor whiteColor]}];
+    [navigationController.navigationBar setTintColor:[UIColor whiteColor]];
+    self.window.rootViewController = navigationController;
     [self.window makeKeyAndVisible];
     return YES;
 }
